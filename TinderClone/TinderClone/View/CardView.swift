@@ -11,6 +11,13 @@ class CardView: UIView {
     
     //MARK: - Properties
     
+    private let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.image = #imageLiteral(resourceName: "jane3")
+        return iv
+    }()
+    
     //MARK: - Lifecycle
     
     override init(frame: CGRect) {
@@ -19,6 +26,9 @@ class CardView: UIView {
         backgroundColor = .systemPurple
         layer.cornerRadius = 10
 //        clipsToBounds = true
+        
+        addSubview(imageView)
+        imageView.fillSuperview()
         
     }
     
