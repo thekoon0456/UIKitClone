@@ -26,15 +26,18 @@ final class HomeController: UIViewController {
         super.viewDidLoad()
         
         configureUI()
-        confihureCards()
+        configureCards()
     }
     
     //MARK: - Helpers
     
-    func confihureCards() {
-        let cardView1 = CardView()
-        let cardView2 = CardView()
+    func configureCards() {
+        let user1 = User(name: "Jane Doe", age: 22, images: [#imageLiteral(resourceName: "lady4c"), #imageLiteral(resourceName: "jane2")])
+        let user2 = User(name: "Megan", age: 21, images: [#imageLiteral(resourceName: "kelly2"), #imageLiteral(resourceName: "kelly3")])
         
+        let cardView1 = CardView(viewModel: CardViewModel(user: user1))
+        let cardView2 = CardView(viewModel: CardViewModel(user: user2))
+    
         deckView.addSubview(cardView1)
         deckView.addSubview(cardView2)
         

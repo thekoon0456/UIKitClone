@@ -7,12 +7,19 @@
 
 import UIKit
 
+enum SwipeDirection: Int {
+    case left = -1
+    case right = 1
+}
+
 class CardView: UIView {
     
     //MARK: - Properties
+    private let viewModel: CardViewModel
+    
     //클래스 여러 위치에서 엑세스
     private let gradientLayer = CAGradientLayer()
-    
+
     private let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
@@ -41,13 +48,16 @@ class CardView: UIView {
     
     //MARK: - Lifecycle
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(viewModel: CardViewModel) {
+        self.viewModel = viewModel
+        super.init(frame: .zero)
+        
+        configureGestureRecognizers()
+        
+        imageView.image = viewModel.user.images.first
         
         backgroundColor = .systemPurple
         layer.cornerRadius = 10
-        
-        configureGestureRecognizers()
         
         addSubview(imageView)
         imageView.fillSuperview()
@@ -76,18 +86,16 @@ class CardView: UIView {
     
     //MARK: - Actions
     @objc func handlePanGesture(sender: UIPanGestureRecognizer) {
-        let translation = sender.translation(in: nil)
+
         //DEBUG로 filter 검색 가능
         switch sender.state {
         case .began:
+            superview?.subviews.forEach { $0.layer.removeAllAnimations() } 
             print("DEBUG: Pan did begin...")
         case .changed:
-            let degrees: CGFloat = translation.x / 20
-            let angle = degrees * .pi / 180
-            let rotaionalTransform = CGAffineTransform(rotationAngle: angle)
-            self.transform = rotaionalTransform.translatedBy(x: translation.x, y: translation.y)
+            panCard(sender: sender)
         case .ended:
-            print("DEBUG: Pan  ended...")
+            resetCardPosition(sender: sender)
         default: break
         }
     }
@@ -97,6 +105,34 @@ class CardView: UIView {
     }
     
     //MARK: - Helpers
+    
+    func panCard(sender: UIPanGestureRecognizer) {
+        let translation = sender.translation(in: nil)
+        let degrees: CGFloat = translation.x / 20
+        let angle = degrees * .pi / 180
+        let rotaionalTransform = CGAffineTransform(rotationAngle: angle)
+        self.transform = rotaionalTransform.translatedBy(x: translation.x, y: translation.y)
+    }
+    
+    func resetCardPosition(sender: UIPanGestureRecognizer) {
+        //스와이프 방향
+        let direction: SwipeDirection = sender.translation(in: nil).x > 100 ? .right : .left
+        //카드 넘길지 판단. x절대값이 100 넘으면 넘김
+        let shouldDismissCard = abs(sender.translation(in: nil).x) > 100
+        
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 0.6, initialSpringVelocity: 0.1, options: .curveEaseOut) {
+            if shouldDismissCard {
+                let xTranslation = CGFloat(direction.rawValue) * 1000 //x로 1000픽셀 만큼 이동
+                let offScreenTransform = self.transform.translatedBy(x: xTranslation, y: 0)
+                self.transform = offScreenTransform
+                self.removeFromSuperview()
+            } else {
+                self.transform = .identity
+            }
+
+            print("DEBUG: Animation did complete...")
+        }
+    }
     
     func configureGradientLayer() {
         gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]

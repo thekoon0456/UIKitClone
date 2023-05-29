@@ -17,6 +17,8 @@
 		7CA4435D2A233DC400070381 /* HomeNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA4435C2A233DC400070381 /* HomeNavigationStackView.swift */; };
 		7CA4435F2A23665800070381 /* BottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA4435E2A23665800070381 /* BottomControlsStackView.swift */; };
 		7CA443612A2369F700070381 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA443602A2369F700070381 /* CardView.swift */; };
+		7CDBB8342A248A1600E92089 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB8332A248A1600E92089 /* CardViewModel.swift */; };
+		7CFD27B02A2488F900AB7ECC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFD27AF2A2488F900AB7ECC /* User.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		7CA4435C2A233DC400070381 /* HomeNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationStackView.swift; sourceTree = "<group>"; };
 		7CA4435E2A23665800070381 /* BottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControlsStackView.swift; sourceTree = "<group>"; };
 		7CA443602A2369F700070381 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		7CDBB8332A248A1600E92089 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
+		7CFD27AF2A2488F900AB7ECC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,7 @@
 		7CA443552A233AF200070381 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				7CDBB8332A248A1600E92089 /* CardViewModel.swift */,
 			);
 			name = ViewModel;
 			sourceTree = "<group>";
@@ -123,6 +128,7 @@
 		7CA443572A233AFA00070381 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				7CFD27AF2A2488F900AB7ECC /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -202,9 +208,11 @@
 				7CA4435F2A23665800070381 /* BottomControlsStackView.swift in Sources */,
 				7CA4433F2A233AC000070381 /* AppDelegate.swift in Sources */,
 				7CA4435D2A233DC400070381 /* HomeNavigationStackView.swift in Sources */,
+				7CFD27B02A2488F900AB7ECC /* User.swift in Sources */,
 				7CA443412A233AC000070381 /* SceneDelegate.swift in Sources */,
 				7CA443592A233BBE00070381 /* HomeController.swift in Sources */,
 				7CA4435B2A233D2D00070381 /* Extension.swift in Sources */,
+				7CDBB8342A248A1600E92089 /* CardViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
