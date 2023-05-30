@@ -21,6 +21,7 @@
 		7CDBB8372A249FE500E92089 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB8362A249FE500E92089 /* LoginController.swift */; };
 		7CDBB8392A24A00200E92089 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB8382A24A00200E92089 /* RegistrationController.swift */; };
 		7CDBB83B2A25D4FA00E92089 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB83A2A25D4FA00E92089 /* CustomTextField.swift */; };
+		7CDBB83D2A25D7DF00E92089 /* AuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB83C2A25D7DF00E92089 /* AuthButton.swift */; };
 		7CFD27B02A2488F900AB7ECC /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CFD27AF2A2488F900AB7ECC /* User.swift */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,7 @@
 		7CDBB8362A249FE500E92089 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		7CDBB8382A24A00200E92089 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
 		7CDBB83A2A25D4FA00E92089 /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		7CDBB83C2A25D7DF00E92089 /* AuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthButton.swift; sourceTree = "<group>"; };
 		7CFD27AF2A2488F900AB7ECC /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -95,6 +97,7 @@
 			children = (
 				7CA4435A2A233D2D00070381 /* Extension.swift */,
 				7CDBB83A2A25D4FA00E92089 /* CustomTextField.swift */,
+				7CDBB83C2A25D7DF00E92089 /* AuthButton.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -222,6 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7CA443612A2369F700070381 /* CardView.swift in Sources */,
+				7CDBB83D2A25D7DF00E92089 /* AuthButton.swift in Sources */,
 				7CA4435F2A23665800070381 /* BottomControlsStackView.swift in Sources */,
 				7CA4433F2A233AC000070381 /* AppDelegate.swift in Sources */,
 				7CA4435D2A233DC400070381 /* HomeNavigationStackView.swift in Sources */,
