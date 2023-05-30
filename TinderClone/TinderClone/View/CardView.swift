@@ -15,7 +15,7 @@ enum SwipeDirection: Int {
 class CardView: UIView {
     
     //MARK: - Properties
-    private let viewModel: CardViewModel
+    let viewModel: CardViewModel
     
     //클래스 여러 위치에서 엑세스
     private let gradientLayer = CAGradientLayer()
@@ -27,16 +27,10 @@ class CardView: UIView {
         return iv
     }()
     
-    private let infoLabel: UILabel = {
+    private lazy var infoLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 2
-        
-        let attributedText = NSMutableAttributedString(string: "Jane Doe", attributes: [.font : UIFont.systemFont(ofSize: 32, weight: .heavy), .foregroundColor : UIColor.white])
-        
-        attributedText.append(NSMutableAttributedString(string: "  20", attributes: [.font : UIFont.systemFont(ofSize: 28), .foregroundColor : UIColor.white]))
-        
-        label.attributedText = attributedText
-        
+        label.attributedText = viewModel.userInfoText //내부가 아닌 viewModel에 접근. 인스턴스 만들어질때 초기화가 안되어있음. lazy var로 선언하면 viewModel이 초기화된 뒤라서 접근 가능
         return label
     }()
     
@@ -101,7 +95,16 @@ class CardView: UIView {
     }
     
     @objc func handleTapGesture(sender: UITapGestureRecognizer) {
-        print("DEBUG: Did tap in photo...")
+        let location = sender.location(in: nil).x
+        let shouldShowNextPhoto = location > self.frame.width / 2
+        
+        if shouldShowNextPhoto {
+            viewModel.shouldNextPhoto()
+        } else {
+            viewModel.showPreviousPhoto()
+        }
+        
+        imageView.image = viewModel.imageToShow
     }
     
     //MARK: - Helpers
