@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyCH1PqFCafvN0q1kn4EAlYFQ6tcRdg3vFs</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1018893088987</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.thekoon.TinderClone</string>
+	<key>PROJECT_ID</key>
+	<string>tinderclone-72f49</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tinderclone-72f49.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1018893088987:ios:4a097716a9dc8519f7b4fe</string>
+</dict>
+</plist>
