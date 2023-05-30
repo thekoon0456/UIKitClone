@@ -11,6 +11,8 @@ class LoginController: UIViewController {
     
     //MARK: - Properties
     
+    private var viewModel = LoginViewModel()
+    
     private let iconImageView: UIImageView = {
         let iv = UIImageView()
         iv.image = #imageLiteral(resourceName: "app_icon").withRenderingMode(.alwaysTemplate) //색상변경 가능
@@ -43,13 +45,24 @@ class LoginController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         configureUI()
+        configureTextFieldObservers()
     }
     
     //MARK: - Actions
-    @objc func handleLogin() {
+    
+    @objc func textDidChange(sender: UITextField) {
+        if sender == emailTextField {
+            viewModel.email = sender.text
+        } else {
+            viewModel.password = sender.text
+        }
         
+        checkFormStatus()
+    }
+    
+    @objc func handleLogin() {
+        navigationController?.pushViewController(HomeController(), animated: true)
     }
     
     @objc func handleShowRegistration() {
@@ -57,6 +70,16 @@ class LoginController: UIViewController {
     }
     
     //MARK: - Helpers
+    
+    func checkFormStatus() {
+        if viewModel.formIsValid {
+            authButton.isEnabled = true
+            authButton.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        } else {
+            authButton.isEnabled = false
+            authButton.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        }
+    }
     
     func configureUI() {
         navigationController?.navigationBar.isHidden = true //상단에 돌아가기버튼 없앰
@@ -78,5 +101,14 @@ class LoginController: UIViewController {
         view.addSubview(goToRegistrationButton)
         goToRegistrationButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 32, paddingRight: 32)
     }
+    
+    func configureTextFieldObservers() {
+        emailTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+    }
+    
+}
+
+extension LoginController {
     
 }

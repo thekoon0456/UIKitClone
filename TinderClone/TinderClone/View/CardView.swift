@@ -23,6 +23,7 @@ class CardView: UIView {
     private let imageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
         iv.image = #imageLiteral(resourceName: "jane3")
         return iv
     }()

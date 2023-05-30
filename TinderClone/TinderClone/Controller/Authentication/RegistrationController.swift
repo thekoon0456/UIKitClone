@@ -10,11 +10,15 @@ import UIKit
 class RegistrationController: UIViewController {
     
     //MARK: - Properties
+    
+    private var viewModel = RegistrationViewModel()
+    
     private lazy var selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
         button.setImage(#imageLiteral(resourceName: "plus_photo"), for: .normal)
         button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
+        button.clipsToBounds = true
         return button
     }()
     
@@ -44,7 +48,7 @@ class RegistrationController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        configureTextFieldObservers()
         configureUI()
     }
     
@@ -63,7 +67,32 @@ class RegistrationController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    @objc func textDidChange(sender: UITextField) {
+        switch sender {
+        case let a where a == emailTextField:
+            viewModel.email = sender.text
+        case let a where a == fullNameTextField:
+            viewModel.fullName = sender.text
+        case let a where a == passwordTextField:
+            viewModel.password = sender.text
+        default:
+            break
+        }
+        
+        checkFormStatus()
+    }
+    
     //MARK: - Helpers
+    
+    func checkFormStatus() {
+        if viewModel.formIsValid {
+            authButton.isEnabled = true
+            authButton.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        } else {
+            authButton.isEnabled = false
+            authButton.backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
+        }
+    }
     
     func configureUI() {
         view.backgroundColor = .systemPurple
@@ -83,6 +112,14 @@ class RegistrationController: UIViewController {
         
         view.addSubview(goToLogInButton)
         goToLogInButton.anchor(left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.bottomAnchor, right: view.rightAnchor, paddingLeft: 32, paddingRight: 32)
+        
+        configureTextFieldObservers()
+    }
+    
+    func configureTextFieldObservers() {
+        emailTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        fullNameTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
+        passwordTextField.addTarget(self, action: #selector(textDidChange), for: .editingChanged)
     }
     
 }

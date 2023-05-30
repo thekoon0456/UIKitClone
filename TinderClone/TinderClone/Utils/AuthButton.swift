@@ -17,7 +17,7 @@ class AuthButton: UIButton {
         titleLabel?.font = .systemFont(ofSize: 16, weight: .heavy)
         layer.cornerRadius = 5
         heightAnchor.constraint(equalToConstant: 50).isActive = true
-        isEnabled = false
+//        isEnabled = false
     }
     
     required init?(coder: NSCoder) {
