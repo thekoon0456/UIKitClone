@@ -67,9 +67,9 @@ class RegistrationController: UIViewController {
                 print("DEBUG: 회원가입 오류 \(error.localizedDescription)")
             }
             
-            print("회원가입 성공")
+            self.dismiss(animated: true)
         }
-//        print("handelRegisterUser")
+
     }
     
     @objc func handleSelectPhoto() {

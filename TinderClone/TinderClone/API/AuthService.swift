@@ -18,9 +18,13 @@ struct AuthCredentials {
     let profileImage: UIImage
 }
 
-
 //인증
 struct AuthService {
+    
+    static func logUserIn(withEmail email: String, password: String, complition: ((AuthDataResult?, Error?) -> Void)?) {
+        Auth.auth().signIn(withEmail: email, password: password, completion: complition)
+    }
+    
     
     static func registerUser(withCredentials credentials: AuthCredentials, completion: @escaping (Error?) -> Void) {
         
