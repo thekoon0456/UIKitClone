@@ -18,6 +18,8 @@
 		7CA4435D2A233DC400070381 /* HomeNavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA4435C2A233DC400070381 /* HomeNavigationStackView.swift */; };
 		7CA4435F2A23665800070381 /* BottomControlsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA4435E2A23665800070381 /* BottomControlsStackView.swift */; };
 		7CA443612A2369F700070381 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA443602A2369F700070381 /* CardView.swift */; };
+		7CA860102A260D7F008D84BB /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA8600F2A260D7F008D84BB /* AuthService.swift */; };
+		7CA860122A260D85008D84BB /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CA860112A260D85008D84BB /* Service.swift */; };
 		7CDBB8342A248A1600E92089 /* CardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB8332A248A1600E92089 /* CardViewModel.swift */; };
 		7CDBB8372A249FE500E92089 /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB8362A249FE500E92089 /* LoginController.swift */; };
 		7CDBB8392A24A00200E92089 /* RegistrationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDBB8382A24A00200E92089 /* RegistrationController.swift */; };
@@ -41,6 +43,8 @@
 		7CA4435C2A233DC400070381 /* HomeNavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeNavigationStackView.swift; sourceTree = "<group>"; };
 		7CA4435E2A23665800070381 /* BottomControlsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomControlsStackView.swift; sourceTree = "<group>"; };
 		7CA443602A2369F700070381 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		7CA8600F2A260D7F008D84BB /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		7CA860112A260D85008D84BB /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		7CDBB8332A248A1600E92089 /* CardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardViewModel.swift; sourceTree = "<group>"; };
 		7CDBB8362A249FE500E92089 /* LoginController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginController.swift; sourceTree = "<group>"; };
 		7CDBB8382A24A00200E92089 /* RegistrationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationController.swift; sourceTree = "<group>"; };
@@ -72,7 +76,6 @@
 				F7FD30DEA2CFFC2F5F0DFFCE /* Pods-TinderClone.debug.xcconfig */,
 				D7AC1FC0C692F13A879D1DAA /* Pods-TinderClone.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -127,6 +130,8 @@
 		7CA443532A233AED00070381 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				7CA8600F2A260D7F008D84BB /* AuthService.swift */,
+				7CA860112A260D85008D84BB /* Service.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -309,9 +314,11 @@
 				7CFD27B02A2488F900AB7ECC /* User.swift in Sources */,
 				7CA443412A233AC000070381 /* SceneDelegate.swift in Sources */,
 				7CDBB8392A24A00200E92089 /* RegistrationController.swift in Sources */,
+				7CA860122A260D85008D84BB /* Service.swift in Sources */,
 				7CA443592A233BBE00070381 /* HomeController.swift in Sources */,
 				7CDBB83B2A25D4FA00E92089 /* CustomTextField.swift in Sources */,
 				7CA4435B2A233D2D00070381 /* Extension.swift in Sources */,
+				7CA860102A260D7F008D84BB /* AuthService.swift in Sources */,
 				7CDBB8342A248A1600E92089 /* CardViewModel.swift in Sources */,
 				7CDBB8372A249FE500E92089 /* LoginController.swift in Sources */,
 			);

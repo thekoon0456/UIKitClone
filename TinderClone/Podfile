@@ -6,6 +6,7 @@ target 'TinderClone' do
   use_frameworks!
 
   # Pods for TinderClone
+	pod 'Firebase/Core'
 	pod 'FirebaseFirestore'
 	pod 'FirebaseAuth'
 	pod 'FirebaseStorage'

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Firebase
 
 final class HomeController: UIViewController {
     
@@ -24,9 +25,28 @@ final class HomeController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        checkIfUserIsLoggedIn()
         configureUI()
         configureCards()
+//        logOut()
+    }
+    
+    //MARK: - API
+    func checkIfUserIsLoggedIn() {
+        if Auth.auth().currentUser == nil {
+            presentLoginController()
+        } else {
+            print("DEBUG: 유저 로그인 함")
+        }
+    }
+    
+    func logOut() {
+        do {
+            try Auth.auth().signOut()
+            presentLoginController()
+        } catch {
+            print("DEBUG: 로그아웃 실패")
+        }
     }
     
     //MARK: - Helpers
@@ -57,5 +77,15 @@ final class HomeController: UIViewController {
         stack.isLayoutMarginsRelativeArrangement = true
         stack.layoutMargins = .init(top: 0, left: 12, bottom: 0, right: 12)
         stack.bringSubviewToFront(deckView)
+    }
+    
+    // Auth.auth().signOut()로 API 호출한 뒤에 비동기 함수로 실행
+    func presentLoginController() {
+        DispatchQueue.main.async {
+            let controller = LoginController()
+            let nav = UINavigationController(rootViewController: controller)
+            nav.modalPresentationStyle = .fullScreen
+            self.present(nav, animated: true)
+        }
     }
 }
