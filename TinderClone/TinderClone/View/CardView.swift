@@ -49,7 +49,7 @@ class CardView: UIView {
         
         configureGestureRecognizers()
         
-        imageView.image = viewModel.user.images.first
+//        imageView.image = viewModel.user.images.first
         
         backgroundColor = .systemPurple
         layer.cornerRadius = 10
@@ -96,16 +96,16 @@ class CardView: UIView {
     }
     
     @objc func handleTapGesture(sender: UITapGestureRecognizer) {
-        let location = sender.location(in: nil).x
-        let shouldShowNextPhoto = location > self.frame.width / 2
-        
-        if shouldShowNextPhoto {
-            viewModel.shouldNextPhoto()
-        } else {
-            viewModel.showPreviousPhoto()
-        }
-        
-        imageView.image = viewModel.imageToShow
+//        let location = sender.location(in: nil).x
+//        let shouldShowNextPhoto = location > self.frame.width / 2
+//
+//        if shouldShowNextPhoto {
+//            viewModel.shouldNextPhoto()
+//        } else {
+//            viewModel.showPreviousPhoto()
+//        }
+//
+//        imageView.image = viewModel.imageToShow
     }
     
     //MARK: - Helpers

@@ -13,7 +13,7 @@ class CardViewModel {
     
     let userInfoText: NSAttributedString
     private var imageIndex = 0
-    lazy var imageToShow = user.images.first
+//    lazy var imageToShow = user.images.first
     
     init(user: User) {
         self.user = user
@@ -25,16 +25,16 @@ class CardViewModel {
         userInfoText = attributedText
     }
     
-    func shouldNextPhoto() {
-        //index guard 사용해 범위 내로 
-        guard imageIndex < user.images.count - 1 else { return }
-        imageIndex += 1
-        self.imageToShow = user.images[imageIndex]
-    }
-    
-    func showPreviousPhoto() {
-        guard imageIndex > 0 else { return }
-        imageIndex -= 1
-        self.imageToShow = user.images[imageIndex]
-    }
+//    func shouldNextPhoto() {
+//        //index guard 사용해 범위 내로 
+//        guard imageIndex < user.images.count - 1 else { return }
+//        imageIndex += 1
+//        self.imageToShow = user.images[imageIndex]
+//    }
+//    
+//    func showPreviousPhoto() {
+//        guard imageIndex > 0 else { return }
+//        imageIndex -= 1
+//        self.imageToShow = user.images[imageIndex]
+//    }
 }
