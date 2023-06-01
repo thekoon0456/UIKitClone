@@ -14,6 +14,10 @@ final class HomeController: UIViewController {
     private let topStack = HomeNavigationStackView()
     private let bottomStack = BottomControlsStackView()
     
+    private var viewModels = [CardViewModel]() {
+        didSet { configureCards() }
+    }
+    
     private let deckView: UIView = {
         let view = UIView()
         view.backgroundColor = .systemPink
@@ -28,17 +32,15 @@ final class HomeController: UIViewController {
         checkIfUserIsLoggedIn()
         configureUI()
         configureCards()
-        fetchUser()
+        fetchUsers()
         //        logOut()
     }
     
     //MARK: - API
     
-    func fetchUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        Service.fetchUser(withUid: uid) { user in
-            print("DEBUG: 패치 완료")
-            print("DEBUG: userName: \(user.name)")
+    func fetchUsers() {
+        Service.fetchUsers { users in
+            self.viewModels = users.map { CardViewModel(user: $0) }
         }
     }
     
@@ -62,17 +64,13 @@ final class HomeController: UIViewController {
     //MARK: - Helpers
     
     func configureCards() {
-//        let user1 = User(name: "Jane Doe", age: 22, images: [#imageLiteral(resourceName: "lady4c"), #imageLiteral(resourceName: "jane2")])
-//        let user2 = User(name: "Megan", age: 21, images: [#imageLiteral(resourceName: "kelly2"), #imageLiteral(resourceName: "kelly3")])
-//        
-//        let cardView1 = CardView(viewModel: CardViewModel(user: user1))
-//        let cardView2 = CardView(viewModel: CardViewModel(user: user2))
-//    
-//        deckView.addSubview(cardView1)
-//        deckView.addSubview(cardView2)
-//        
-//        cardView1.fillSuperview()
-//        cardView2.fillSuperview()
+        print("카드 구성")
+        
+        viewModels.forEach { viewModel in
+            let cardView = CardView(viewModel: viewModel)
+            deckView.addSubview(cardView)
+            cardView.fillSuperview()
+        }
     }
     
     func configureUI() {

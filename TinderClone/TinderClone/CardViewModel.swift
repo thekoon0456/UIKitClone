@@ -13,7 +13,8 @@ class CardViewModel {
     
     let userInfoText: NSAttributedString
     private var imageIndex = 0
-//    lazy var imageToShow = user.images.first
+    
+    let imageUrl: URL?
     
     init(user: User) {
         self.user = user
@@ -23,6 +24,8 @@ class CardViewModel {
         attributedText.append(NSMutableAttributedString(string: "  \(user.age)", attributes: [.font : UIFont.systemFont(ofSize: 28), .foregroundColor : UIColor.white]))
         
         userInfoText = attributedText
+        
+        self.imageUrl = URL(string: user.profileImageUrl)
     }
     
 //    func shouldNextPhoto() {
