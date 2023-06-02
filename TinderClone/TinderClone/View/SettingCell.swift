@@ -11,7 +11,7 @@ class SettingCell: UITableViewCell {
     
     //MARK: -  Properties
     
-    var viewMidel: SettingViewModel! {
+    var viewModel: SettingViewModel! {
         didSet { configure() }
     }
     
@@ -75,10 +75,11 @@ class SettingCell: UITableViewCell {
     //MARK: - Helper
     
     func configure() {
-        inputField.isHidden = viewMidel.shouldHideInputField
-        sliderStack.isHidden = viewMidel.shouldHideSlider
+        inputField.isHidden = viewModel.shouldHideInputField
+        sliderStack.isHidden = viewModel.shouldHideSlider
         
-        inputField.placeholder = viewMidel.placeHolderText
+        inputField.placeholder = viewModel.placeHolderText
+        inputField.text = viewModel.value
     }
     
     func createAgeRangeSlider() -> UISlider {

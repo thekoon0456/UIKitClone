@@ -87,7 +87,7 @@ extension SettingsController {
         
         guard let section = SettingSections(rawValue: indexPath.section) else { return cell }
         let viewModel = SettingViewModel(user: user, section: section)
-        cell.viewMidel = viewModel
+        cell.viewModel = viewModel
         
         return cell
     }

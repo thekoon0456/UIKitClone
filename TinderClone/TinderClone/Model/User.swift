@@ -14,7 +14,10 @@ struct User {
     let email: String
     let uid: String
     let profileImageUrl: String
-//    var images: [UIImage]
+    var profession: String
+    var minSeekingAge: Int
+    var maxSeekingAge: Int
+    var bio: String
     
     //firebase에서 키-값으로 구성된 데이터 받아오기. 딕셔너리로 구성
     init(dictionary: [String: Any]) {
@@ -23,6 +26,10 @@ struct User {
         self.email = dictionary["email"] as? String ?? ""
         self.uid = dictionary["uid"] as? String ?? ""
         self.profileImageUrl = dictionary["imageUrl"] as? String ?? ""
+        self.profession = dictionary["profession"] as? String ?? ""
+        self.minSeekingAge = dictionary["minSeekingAge"] as? Int ?? 18
+        self.maxSeekingAge = dictionary["maxSeekingAge"] as? Int ?? 40
+        self.bio = dictionary["bio"] as? String ?? ""
     }
-    
+
 }
