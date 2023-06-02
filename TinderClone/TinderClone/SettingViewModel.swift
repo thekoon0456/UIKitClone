@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SettingSection: Int, CaseIterable {
+enum SettingSections: Int, CaseIterable {
     case name
     case profession
     case age
@@ -32,4 +32,22 @@ enum SettingSection: Int, CaseIterable {
 
 struct SettingViewModel {
     
+    private let user: User
+    private let section: SettingSections
+    
+    let placeHolderText: String
+    
+    var shouldHideInputField: Bool {
+        return section == .ageRange
+    }
+    
+    var shouldHideSlider: Bool {
+        return section != .ageRange
+    }
+    
+    init(user: User, section: SettingSections) {
+        self.user = user
+        self.section = section
+        placeHolderText = "Enter \(section.description.lowercased())"
+    }
 }

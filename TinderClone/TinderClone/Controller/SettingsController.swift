@@ -12,11 +12,23 @@ private let reuserIdentifier = "SettingCell"
 class SettingsController: UITableViewController {
     
     //MARK: - Properties
+    
+    private let user: User
+    
     private let headerView = SettingHeader()
     private let imagePicker = UIImagePickerController()
     private var imageIndex = 0
     
     //MARK: - Lifecycle
+    
+    init(user: User) {
+        self.user = user
+        super.init(style: .plain)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +62,7 @@ class SettingsController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
         
         tableView.separatorStyle = .none //테이블뷰 구분선 제거
+        
         tableView.tableHeaderView = headerView
         tableView.backgroundColor = .systemGroupedBackground
         tableView.register(SettingCell.self, forCellReuseIdentifier: reuserIdentifier)
@@ -62,7 +75,7 @@ class SettingsController: UITableViewController {
 
 extension SettingsController {
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return SettingSection.allCases.count
+        return SettingSections.allCases.count
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -71,6 +84,11 @@ extension SettingsController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuserIdentifier, for: indexPath) as! SettingCell
+        
+        guard let section = SettingSections(rawValue: indexPath.section) else { return cell }
+        let viewModel = SettingViewModel(user: user, section: section)
+        cell.viewMidel = viewModel
+        
         return cell
     }
 }
@@ -84,13 +102,13 @@ extension SettingsController {
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         print("DEBUG: Section is \(section)")
-        guard let section = SettingSection(rawValue: section) else { return nil }
+        guard let section = SettingSections(rawValue: section) else { return nil }
         return section.description
     }
     
     //높이 동적으로 설정 가능
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let section = SettingSection(rawValue: indexPath.section) else { return 0 }
+        guard let section = SettingSections(rawValue: indexPath.section) else { return 0 }
         return section == .ageRange ? 96 : 44
     }
 }
