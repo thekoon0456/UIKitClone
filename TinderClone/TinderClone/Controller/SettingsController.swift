@@ -7,6 +7,8 @@
 
 import UIKit
 
+private let reuserIdentifier = "SettingCell"
+
 class SettingsController: UITableViewController {
     
     //MARK: - Properties
@@ -49,9 +51,40 @@ class SettingsController: UITableViewController {
         
         tableView.separatorStyle = .none //테이블뷰 구분선 제거
         tableView.tableHeaderView = headerView
+        tableView.register(SettingCell.self, forCellReuseIdentifier: reuserIdentifier)
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
     }
 
+}
+
+//MARK: - UITableViewDataSource
+
+extension SettingsController {
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return SettingSection.allCases.count
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        2
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: reuserIdentifier, for: indexPath) as! SettingCell
+        return cell
+    }
+}
+
+//MARK: - UITableViewDelegate
+
+extension SettingsController {
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        32
+    }
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        print("DEBUG: Section is \(section)")
+        guard let section = SettingSection(rawValue: section) else { return nil }
+        return section.description
+    }
 }
 
 //MARK: - SettingHeaderDelegate
