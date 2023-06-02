@@ -51,6 +51,7 @@ class SettingsController: UITableViewController {
         
         tableView.separatorStyle = .none //테이블뷰 구분선 제거
         tableView.tableHeaderView = headerView
+        tableView.backgroundColor = .systemGroupedBackground
         tableView.register(SettingCell.self, forCellReuseIdentifier: reuserIdentifier)
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
     }
@@ -65,7 +66,7 @@ extension SettingsController {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
+        1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -80,10 +81,17 @@ extension SettingsController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         32
     }
+    
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         print("DEBUG: Section is \(section)")
         guard let section = SettingSection(rawValue: section) else { return nil }
         return section.description
+    }
+    
+    //높이 동적으로 설정 가능
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let section = SettingSection(rawValue: indexPath.section) else { return 0 }
+        return section == .ageRange ? 96 : 44
     }
 }
 
