@@ -7,10 +7,19 @@
 
 import UIKit
 
+protocol SettingHeaderDelegate: AnyObject {
+    func settingHeader(_ header: SettingHeader, didSelect index: Int)
+}
+
 class SettingHeader: UIView {
     
     //MARK: - Properties
     var buttons = [UIButton]()
+    lazy var button1 = createButton(0)
+    lazy var button2 = createButton(1)
+    lazy var button3 = createButton(2)
+    
+    weak var delegate: SettingHeaderDelegate?
     
     //MARK: - Lifecycle
     
@@ -18,9 +27,9 @@ class SettingHeader: UIView {
         super.init(frame: .zero)
         backgroundColor = .systemGroupedBackground
         
-        let button1 = createButton()
-        let button2 = createButton()
-        let button3 = createButton()
+        buttons.append(button1)
+        buttons.append(button2)
+        buttons.append(button3)
         
         addSubview(button1)
         button1.anchor(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 16)
@@ -40,19 +49,21 @@ class SettingHeader: UIView {
     }
     
     //MARK: - Action
-    @objc func handleSelectPhoto() {
+    @objc func handleSelectPhoto(sender: UIButton) {
         print("사진 셀렉터")
+        delegate?.settingHeader(self, didSelect: sender.tag)
     }
     
     //MARK: - Helpers
     
-    func createButton() -> UIButton {
+    func createButton(_ index: Int) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
         button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFill
+        button.tag = index
         return button
     }
 }
