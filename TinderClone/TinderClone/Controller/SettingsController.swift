@@ -41,7 +41,7 @@ class SettingsController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        confogureUI()
+        configureUI()
     }
     
     //MARK: - Actions
@@ -54,8 +54,8 @@ class SettingsController: UITableViewController {
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Saving Your Data"
         hud.show(in: view)
-        Service.saveUserData(user: user) { [self] error in
-            self.delegate?.settingsController(self, wantsToUpdate: user)
+        Service.saveUserData(user: user) { error in
+            self.delegate?.settingsController(self, wantsToUpdate: self.user)
         }
 
     }
@@ -78,7 +78,7 @@ class SettingsController: UITableViewController {
         headerView.buttons[imageIndex].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
     }
     
-    func confogureUI() {
+    func configureUI() {
         headerView.delegate = self
         imagePicker.delegate = self
         

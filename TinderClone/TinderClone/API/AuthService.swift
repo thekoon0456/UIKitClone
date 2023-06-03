@@ -41,7 +41,7 @@ struct AuthService {
                             "fullName": credentials.fullname,
                             "imageUrls": [imageUrl],
                             "uid": uid,
-                            "age": 10] as [String : Any]
+                            "age": 0] as [String : Any]
                 
                 COLLECTION_USERS.document(uid).setData(data, completion: completion)
             }

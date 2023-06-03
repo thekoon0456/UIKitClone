@@ -22,16 +22,16 @@ class SettingCell: UITableViewCell {
         didSet { configure() }
     }
     
-    lazy var inputField: UITextField = {
+    private lazy var inputField: UITextField = {
         let tf = UITextField()
         tf.borderStyle = .none
         tf.font = UIFont.systemFont(ofSize: 16)
-        
+
         let paddingView = UIView()
         paddingView.setDimensions(height: 50, width: 28)
         tf.leftView = paddingView
         tf.leftViewMode = .always
-        
+
         tf.addTarget(self, action: #selector(handleUpdateUserInfo), for: .editingDidEnd)
         return tf
     }()
@@ -56,10 +56,10 @@ class SettingCell: UITableViewCell {
         
         let minStack = UIStackView(arrangedSubviews: [minAgeLabel, minAgeSlider])
         minStack.spacing = 24
-        
+
         let maxStack = UIStackView(arrangedSubviews: [maxAgeLabel, maxAgeSlider])
         maxStack.spacing = 24
-        
+
         sliderStack = UIStackView(arrangedSubviews: [minStack, maxStack])
         sliderStack.axis = .vertical
         sliderStack.spacing = 16
