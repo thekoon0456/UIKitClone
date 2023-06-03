@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol SettingCellDelegate: AnyObject {
+    func settingCell(_ cell: SettingCell, wantsToUpdateUserWith value: String, for section: SettingSections)
+}
+
 class SettingCell: UITableViewCell {
     
     //MARK: -  Properties
+    
+    weak var delegate: SettingCellDelegate?
     
     var viewModel: SettingViewModel! {
         didSet { configure() }
@@ -24,6 +30,8 @@ class SettingCell: UITableViewCell {
         paddingView.setDimensions(height: 50, width: 28)
         tf.leftView = paddingView
         tf.leftViewMode = .always
+        
+        tf.addTarget(self, action: #selector(handleUpdateUserInfo), for: .editingDidEnd)
         return tf
     }()
     
@@ -60,6 +68,8 @@ class SettingCell: UITableViewCell {
         addSubview(sliderStack)
         sliderStack.centerY(inView: self)
         sliderStack.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 24, paddingRight: 24)
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -67,6 +77,11 @@ class SettingCell: UITableViewCell {
     }
     
     //MARK: - Action
+    
+    @objc func handleUpdateUserInfo(sender: UITextField) {
+        guard let value = sender.text else { return }
+        delegate?.settingCell(self, wantsToUpdateUserWith: value, for: viewModel.section)
+    }
     
     @objc func handleAgeRangeChanged() {
         

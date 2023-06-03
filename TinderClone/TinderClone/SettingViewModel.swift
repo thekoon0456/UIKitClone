@@ -33,7 +33,7 @@ enum SettingSections: Int, CaseIterable {
 struct SettingViewModel {
     
     private let user: User
-    private let section: SettingSections
+    let section: SettingSections
     
     let placeHolderText: String
     var value: String?
