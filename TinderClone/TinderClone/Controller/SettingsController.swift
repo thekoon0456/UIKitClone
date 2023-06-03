@@ -6,11 +6,13 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 private let reuserIdentifier = "SettingCell"
 
 protocol SettingsControllerDelegate: AnyObject {
-    func settingsController(_ constoller: SettingsController, wantsToUpdate user: User)
+    func settingsController(_ controller: SettingsController, wantsToUpdate user: User)
+    func settingsControllerWantsToLogout(_ controller: SettingsController)
 }
 
 class SettingsController: UITableViewController {
@@ -19,7 +21,8 @@ class SettingsController: UITableViewController {
     
     private var user: User
     
-    private let headerView = SettingHeader()
+    private lazy var headerView = SettingHeader(user: user)
+    private let footerView = SettingsFooter()
     private let imagePicker = UIImagePickerController()
     private var imageIndex = 0
     
@@ -48,7 +51,25 @@ class SettingsController: UITableViewController {
     
     @objc func handleDone() {
         view.endEditing(true)
-        delegate?.settingsController(self, wantsToUpdate: user)
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Saving Your Data"
+        hud.show(in: view)
+        Service.saveUserData(user: user) { [self] error in
+            self.delegate?.settingsController(self, wantsToUpdate: user)
+        }
+
+    }
+    
+    //MARK: - API
+    func uploadImage(image: UIImage) {
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Saving Image"
+        hud.show(in: view)
+        
+        Service.uploadImage(image:image) { imageUrl in
+            self.user.imageUrls.append(imageUrl)
+            hud.dismiss()
+        }
     }
     
     //MARK: - Helpers
@@ -69,11 +90,15 @@ class SettingsController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
         
         tableView.separatorStyle = .none //테이블뷰 구분선 제거
-        
+
         tableView.tableHeaderView = headerView
         tableView.backgroundColor = .systemGroupedBackground
         tableView.register(SettingCell.self, forCellReuseIdentifier: reuserIdentifier)
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 300)
+        
+        tableView.tableFooterView = footerView
+        footerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 88)
+        footerView.delegate = self
     }
 
 }
@@ -109,7 +134,6 @@ extension SettingsController {
     }
     
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        print("DEBUG: Section is \(section)")
         guard let section = SettingSections(rawValue: section) else { return nil }
         return section.description
     }
@@ -134,8 +158,9 @@ extension SettingsController: SettingHeaderDelegate {
 
 extension SettingsController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        let selectedImage = info[.originalImage] as? UIImage
+        guard let selectedImage = info[.originalImage] as? UIImage else { return }
         
+        uploadImage(image: selectedImage)
         setHeaderImage(selectedImage)
         
         dismiss(animated: true)
@@ -145,6 +170,14 @@ extension SettingsController: UIImagePickerControllerDelegate, UINavigationContr
 //MARK: - SettingsCellDelegate
 
 extension SettingsController: SettingCellDelegate {
+    func settingCell(_ cell: SettingCell, wantsToUpdateAgeRangeWith sender: UISlider) {
+        if sender == cell.minAgeSlider {
+            user.minSeekingAge = Int(sender.value)
+        } else {
+            user.maxSeekingAge = Int(sender.value)
+        }
+    }
+    
     func settingCell(_ cell: SettingCell, wantsToUpdateUserWith value: String, for section: SettingSections) {
         switch section {
         case .name:
@@ -158,8 +191,14 @@ extension SettingsController: SettingCellDelegate {
         case .ageRange:
             break
         }
-        
-        print("DEBUG: User is \(user)")
+    }
+}
+
+//MARK: - SettingsFooterDelegate
+
+extension SettingsController: SettingsFooterDelegate {
+    func handleLogout() {
+        delegate?.settingsControllerWantsToLogout(self)
     }
     
     

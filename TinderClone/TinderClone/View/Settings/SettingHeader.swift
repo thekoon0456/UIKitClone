@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 protocol SettingHeaderDelegate: AnyObject {
     func settingHeader(_ header: SettingHeader, didSelect index: Int)
@@ -14,18 +15,22 @@ protocol SettingHeaderDelegate: AnyObject {
 class SettingHeader: UIView {
     
     //MARK: - Properties
-    var buttons = [UIButton]()
-    lazy var button1 = createButton(0)
-    lazy var button2 = createButton(1)
-    lazy var button3 = createButton(2)
     
+    private let user: User
     weak var delegate: SettingHeaderDelegate?
+    
+    var buttons = [UIButton]()
     
     //MARK: - Lifecycle
     
-    override init(frame: CGRect) {
+    init(user: User) {
+        self.user = user
         super.init(frame: .zero)
         backgroundColor = .systemGroupedBackground
+        
+        let button1 = createButton(0)
+        let button2 = createButton(1)
+        let button3 = createButton(2)
         
         buttons.append(button1)
         buttons.append(button2)
@@ -42,6 +47,8 @@ class SettingHeader: UIView {
         
         addSubview(stack)
         stack.anchor(top: topAnchor, left: button1.rightAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 16, paddingLeft: 16, paddingBottom: 16, paddingRight: 16)
+        
+        loadUserPhotos()
     }
     
     required init?(coder: NSCoder) {
@@ -56,11 +63,22 @@ class SettingHeader: UIView {
     
     //MARK: - Helpers
     
+    func loadUserPhotos() {
+        let imageUrls = user.imageUrls.map { URL(string: $0) }
+        
+        for (index, url) in imageUrls.enumerated() {
+            SDWebImageManager.shared.loadImage(with: url, options: .continueInBackground, progress: nil) { image, _, _, _, _, _ in
+                self.buttons[index].setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            }
+        }
+    }
+    
     func createButton(_ index: Int) -> UIButton {
         let button = UIButton(type: .system)
         button.setTitle("Select Photo", for: .normal)
         button.layer.cornerRadius = 10
         button.clipsToBounds = true
+        button.backgroundColor = .white
         button.addTarget(self, action: #selector(handleSelectPhoto), for: .touchUpInside)
         button.imageView?.contentMode = .scaleAspectFill
         button.tag = index

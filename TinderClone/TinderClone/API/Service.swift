@@ -38,6 +38,20 @@ struct Service {
         }
     }
     
+    static func saveUserData(user: User, completion: @escaping (Error?) -> Void) {
+        let data = ["uid": user.uid,
+                    "fullName": user.name,
+                    "imageUrls": user.imageUrls,
+                    "age": user.age,
+                    "bio": user.bio,
+                    "profession": user.profession,
+                    "minSeekingAge": user.minSeekingAge,
+                    "maxSeekingAge": user.maxSeekingAge] as [String: Any]
+        
+        COLLECTION_USERS.document(user.uid).setData(data, completion: completion)
+                    
+    }
+    
     static func uploadImage(image: UIImage, complition: @escaping (String) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
         let fileName = UUID().uuidString

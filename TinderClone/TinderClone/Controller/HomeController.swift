@@ -74,8 +74,6 @@ final class HomeController: UIViewController {
     //MARK: - Helpers
     
     func configureCards() {
-        print("카드 구성")
-        
         viewModels.forEach { viewModel in
             let cardView = CardView(viewModel: viewModel)
             deckView.addSubview(cardView)
@@ -130,6 +128,10 @@ extension HomeController: HomeNavigationStackViewDelegate {
 //MARK: - SettingControllerDelegate
 
 extension HomeController: SettingsControllerDelegate {
+    func settingsControllerWantsToLogout(_ controller: SettingsController) {
+        logOut()
+    }
+    
     func settingsController(_ constoller: SettingsController, wantsToUpdate user: User) {
         constoller.dismiss(animated: true)
         self.user = user

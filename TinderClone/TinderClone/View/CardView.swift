@@ -54,6 +54,7 @@ class CardView: UIView {
         
         backgroundColor = .systemPurple
         layer.cornerRadius = 10
+        clipsToBounds = true
         
         addSubview(imageView)
         imageView.fillSuperview()
