@@ -15,6 +15,9 @@ class ProfileController: UIViewController {
     
     private let user: User
     
+    private lazy var viewModel = ProfileViewModel(user: user)
+    private lazy var barStackView = SegmentBarView(numberOfSegments: viewModel.imageUrls.count)
+    
     private lazy var collectionView: UICollectionView = {
         let frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.width + 100)
         let layout = UICollectionViewFlowLayout()
@@ -27,6 +30,12 @@ class ProfileController: UIViewController {
         cv.showsHorizontalScrollIndicator = false
         cv.register(ProfileCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         return cv
+    }()
+    
+    private let blurView: UIVisualEffectView = {
+        let blur = UIBlurEffect(style: .regular)
+        let view = UIVisualEffectView(effect: blur)
+        return view
     }()
     
     private lazy var dismissButton: UIButton = {
@@ -92,7 +101,7 @@ class ProfileController: UIViewController {
         super.viewDidLoad()
         print("user is \(user.name)")
         configureUI()
-        configureBottomControls()
+        loadUserData()
     }
     
     //MARK: - Actions
@@ -115,6 +124,12 @@ class ProfileController: UIViewController {
     
     //MARK: - Helpers
     
+    func loadUserData() {
+        infoLabel.attributedText = viewModel.userDetailAttributedString
+        professionLabel.text = viewModel.profession
+        bioLabel.text = viewModel.bio
+    }
+    
     func configureUI() {
         view.backgroundColor = .white
         
@@ -129,6 +144,17 @@ class ProfileController: UIViewController {
         
         view.addSubview(infoStack)
         infoStack.anchor(top: collectionView.bottomAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 12, paddingLeft: 12, paddingRight: 12)
+        
+        view.addSubview(blurView)
+        blurView.anchor(top: view.topAnchor, left: view.leftAnchor, bottom: view.safeAreaLayoutGuide.topAnchor, right: view.rightAnchor)
+        
+        configureBottomControls()
+        configureBarStackView()
+    }
+    
+    func configureBarStackView() {
+        view.addSubview(barStackView)
+        barStackView.anchor(top: view.topAnchor, left: view.leftAnchor, right: view.rightAnchor, paddingTop: 56, paddingLeft: 8, paddingRight: 8, height: 4)
     }
     
     func configureBottomControls() {
@@ -154,16 +180,12 @@ class ProfileController: UIViewController {
          
 extension ProfileController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        user.imageUrls.count
+        viewModel.imageCount
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
-        if indexPath.row == 0 {
-            cell.backgroundColor = .red
-        } else {
-            cell.backgroundColor = .blue
-        }
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! ProfileCell
+        cell.imageView.sd_setImage(with: viewModel.imageUrls[indexPath.row])
         return cell
     }
 }
@@ -171,7 +193,9 @@ extension ProfileController: UICollectionViewDataSource {
 //MARK: - UICollectionViewDelegate
 
 extension ProfileController: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        barStackView.setHighlighted(index: indexPath.row)
+    }
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout

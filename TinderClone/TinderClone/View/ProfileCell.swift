@@ -9,9 +9,15 @@ import UIKit
 
 class ProfileCell: UICollectionViewCell {
     
+    let imageView = UIImageView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
+        imageView.contentMode = .scaleAspectFill
+        imageView.image = #imageLiteral(resourceName: "jane3")
+        addSubview(imageView)
+        imageView.fillSuperview()
     }
     
     required init?(coder: NSCoder) {

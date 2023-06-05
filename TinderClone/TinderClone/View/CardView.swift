@@ -27,8 +27,7 @@ class CardView: UIView {
     
     //클래스 여러 위치에서 엑세스
     private let gradientLayer = CAGradientLayer()
-    
-    private let barStackView = UIStackView()
+    private lazy var barStackView = SegmentBarView(numberOfSegments: viewModel.imageUrls.count)
 
     private let imageView: UIImageView = {
         let iv = UIImageView()
@@ -124,8 +123,7 @@ class CardView: UIView {
         
         imageView.sd_setImage(with: viewModel.imageUrl)
         
-        barStackView.arrangedSubviews.forEach { $0.backgroundColor = .barDeselectedColor }
-        barStackView.arrangedSubviews[viewModel.index].backgroundColor = .white
+        barStackView.setHighlighted(index: viewModel.index)
     }
     
     //MARK: - Helpers
@@ -159,18 +157,8 @@ class CardView: UIView {
     }
     
     func configureBarStackView() {
-        (0..<viewModel.imageUrls.count).forEach { _ in
-            let barView = UIView()
-            barView.backgroundColor = .barDeselectedColor
-            barStackView.addArrangedSubview(barView)
-        }
-        
-        barStackView.arrangedSubviews.first?.backgroundColor = .white
-        
         addSubview(barStackView)
         barStackView.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingRight: 8, height: 4)
-        barStackView.spacing = 4
-        barStackView.distribution = .fillEqually
     }
     
     func configureGradientLayer() {
