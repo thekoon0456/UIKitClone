@@ -20,6 +20,8 @@ class CardView: UIView {
     
     //클래스 여러 위치에서 엑세스
     private let gradientLayer = CAGradientLayer()
+    
+    private let barStackView = UIStackView()
 
     private let imageView: UIImageView = {
         let iv = UIImageView()
@@ -52,7 +54,6 @@ class CardView: UIView {
         
         imageView.sd_setImage(with: viewModel.imageUrl)
         
-        backgroundColor = .systemPurple
         layer.cornerRadius = 10
         clipsToBounds = true
         
@@ -60,6 +61,7 @@ class CardView: UIView {
         imageView.fillSuperview()
         
         //순서 중요. gradient 위에 label 올리기
+        configureBarStackView()
         configureGradientLayer()
         
         addSubview(infoLabel)
@@ -97,17 +99,20 @@ class CardView: UIView {
         }
     }
     
-    @objc func handleTapGesture(sender: UITapGestureRecognizer) {
-//        let location = sender.location(in: nil).x
-//        let shouldShowNextPhoto = location > self.frame.width / 2
+    @objc func handleChangePhoto(sender: UITapGestureRecognizer) {
+        let location = sender.location(in: nil).x
+        let shouldShowNextPhoto = location > self.frame.width / 2
 //
-//        if shouldShowNextPhoto {
-//            viewModel.shouldNextPhoto()
-//        } else {
-//            viewModel.showPreviousPhoto()
-//        }
-//
-//        imageView.image = viewModel.imageToShow
+        if shouldShowNextPhoto {
+            viewModel.shouldNextPhoto()
+        } else {
+            viewModel.showPreviousPhoto()
+        }
+        
+        imageView.sd_setImage(with: viewModel.imageUrl)
+        
+        barStackView.arrangedSubviews.forEach { $0.backgroundColor = .barDeselectedColor }
+        barStackView.arrangedSubviews[viewModel.index].backgroundColor = .white
     }
     
     //MARK: - Helpers
@@ -140,6 +145,21 @@ class CardView: UIView {
         }
     }
     
+    func configureBarStackView() {
+        (0..<viewModel.imageUrls.count).forEach { _ in
+            let barView = UIView()
+            barView.backgroundColor = .barDeselectedColor
+            barStackView.addArrangedSubview(barView)
+        }
+        
+        barStackView.arrangedSubviews.first?.backgroundColor = .white
+        
+        addSubview(barStackView)
+        barStackView.anchor(top: topAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 8, paddingLeft: 8, paddingRight: 8, height: 4)
+        barStackView.spacing = 4
+        barStackView.distribution = .fillEqually
+    }
+    
     func configureGradientLayer() {
         gradientLayer.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
         gradientLayer.locations = [0.5, 1.1]
@@ -150,7 +170,7 @@ class CardView: UIView {
         let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
         addGestureRecognizer(pan)
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture))
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleChangePhoto))
         addGestureRecognizer(tap)
     }
     

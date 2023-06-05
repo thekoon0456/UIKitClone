@@ -13,7 +13,8 @@ class CardViewModel {
     let imageUrls: [String]
     let userInfoText: NSAttributedString
     private var imageIndex = 0
-    let imageUrl: URL?
+    var index: Int { return imageIndex } //이미지 인덱스 외부에서 수정 안하고 접근만 하도록
+    var imageUrl: URL?
     
     init(user: User) {
         self.user = user
@@ -32,14 +33,14 @@ class CardViewModel {
     
     func shouldNextPhoto() {
 //        //index guard 사용해 범위 내로 
-//        guard imageIndex < user.images.count - 1 else { return }
-//        imageIndex += 1
-//        self.imageToShow = user.images[imageIndex]
+        guard imageIndex < user.imageUrls.count - 1 else { return }
+        imageIndex += 1
+        imageUrl = URL(string: imageUrls[imageIndex])
     }
 //    
     func showPreviousPhoto() {
-//        guard imageIndex > 0 else { return }
-//        imageIndex -= 1
-//        self.imageToShow = user.images[imageIndex]
+        guard imageIndex > 0 else { return }
+        imageIndex -= 1
+        imageUrl = URL(string: imageUrls[imageIndex])
     }
 }
