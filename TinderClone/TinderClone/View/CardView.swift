@@ -13,9 +13,16 @@ enum SwipeDirection: Int {
     case right = 1
 }
 
+protocol CardViewDelegate: AnyObject {
+    func cardView(_ view: CardView, wantsToShowProfileFor user: User)
+}
+
 class CardView: UIView {
     
     //MARK: - Properties
+    
+    weak var delegate: CardViewDelegate?
+    
     let viewModel: CardViewModel
     
     //클래스 여러 위치에서 엑세스
@@ -41,6 +48,7 @@ class CardView: UIView {
     private lazy var infoButton: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "info_icon")?.withRenderingMode(.alwaysOriginal), for: .normal)
+        button.addTarget(self, action: #selector(handleShowProfile), for: .touchUpInside)
         return button
     }()
     
@@ -84,6 +92,11 @@ class CardView: UIView {
     }
     
     //MARK: - Actions
+    
+    @objc func handleShowProfile() {
+        delegate?.cardView(self, wantsToShowProfileFor: viewModel.user)
+    }
+    
     @objc func handlePanGesture(sender: UIPanGestureRecognizer) {
 
         //DEBUG로 filter 검색 가능

@@ -22,9 +22,8 @@ final class HomeController: UIViewController {
     
     private let deckView: UIView = {
         let view = UIView()
-        view.backgroundColor = .systemPink
+        view.backgroundColor = .white
         view.layer.cornerRadius = 10
-        
         return view
     }()
     
@@ -77,6 +76,7 @@ final class HomeController: UIViewController {
     func configureCards() {
         viewModels.forEach { viewModel in
             let cardView = CardView(viewModel: viewModel)
+            cardView.delegate = self
             deckView.addSubview(cardView)
             cardView.fillSuperview()
         }
@@ -138,6 +138,15 @@ extension HomeController: SettingsControllerDelegate {
         constoller.dismiss(animated: true)
         self.user = user
     }
-    
-    
+}
+
+//MARK: - CardViewDelegate
+
+extension HomeController: CardViewDelegate {
+    func cardView(_ view: CardView, wantsToShowProfileFor user: User) {
+        let controller = ProfileController(user: user)
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: true)
+        
+    }
 }
