@@ -165,31 +165,60 @@ extension HomeController: SettingsControllerDelegate {
 //MARK: - CardViewDelegate
 
 extension HomeController: CardViewDelegate {
+    func cardView(_ view: CardView, didLikeUser: Bool) {
+        view.removeFromSuperview()
+        self.cardViews.removeAll(where: { view == $0} )
+        
+        guard let user = topCardView?.viewModel.user else { return }
+        Service.saveSwipe(forUser: user, isLike: didLikeUser)
+        
+        self.topCardView = cardViews.last
+    }
+    
     func cardView(_ view: CardView, wantsToShowProfileFor user: User) {
         let controller = ProfileController(user: user)
+        controller.delegate = self
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true)
         
     }
 }
 
+//MARK: - BottomControlsStackViewDelegate
+
 extension HomeController: BottomControlsStackViewDelegate {
     func handleLike() {
         guard let topCard = topCardView else { return }
         
         performSwipeAnimation(shouldLike: true)
-        
-        print("DEBUG: Like User \(topCard.viewModel.user.name)")
+        Service.saveSwipe(forUser: topCard.viewModel.user, isLike: true)
     }
     
     func handleDislike() {
+        guard let topCard = topCardView else { return }
+        
         performSwipeAnimation(shouldLike: false)
-        print("DEBUG: Handle disliking here...")
+        Service.saveSwipe(forUser: topCard.viewModel.user, isLike: false)
     }
     
     func handleRefresh() {
         print("DEBUG: Handle refrech here...")
     }
+}
+
+extension HomeController: ProfileControllerDelegate {
+    func profileController(_ controller: ProfileController, didLikeUser user: User) {
+        //profileController가 dismiss된 뒤 애니메이션 작동하도록 complition으로 구현
+        controller.dismiss(animated: true) {
+            self.performSwipeAnimation(shouldLike: true)
+            Service.saveSwipe(forUser: user, isLike: true)
+        }
+    }
     
-    
+    func profileController(_ controller: ProfileController, didDislikeUser user: User) {
+        controller.dismiss(animated: true) {
+            self.performSwipeAnimation(shouldLike: false)
+            Service.saveSwipe(forUser: user, isLike: false)
+        }
+    }
 }

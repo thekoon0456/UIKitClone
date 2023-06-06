@@ -52,6 +52,22 @@ struct Service {
                     
     }
     
+    static func saveSwipe(forUser user: User, isLike: Bool) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+//        let shouldLike = isLike ? 1 : 0
+        
+        COLLECTION_SWIPES.document(uid).getDocument { snapshot, error in
+            let data = [user.uid: isLike]
+            
+            if snapshot?.exists == true {
+                COLLECTION_SWIPES.document(uid).updateData(data)
+            } else {
+                COLLECTION_SWIPES.document(uid).setData(data)
+            }
+        }
+        
+    }
+    
     static func uploadImage(image: UIImage, complition: @escaping (String) -> Void) {
         guard let imageData = image.jpegData(compressionQuality: 0.75) else { return }
         let fileName = UUID().uuidString

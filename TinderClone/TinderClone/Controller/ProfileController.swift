@@ -9,11 +9,17 @@ import UIKit
 
 private let reuseIdentifier = "ProfileCell"
 
+protocol ProfileControllerDelegate: AnyObject {
+    func profileController(_ controller: ProfileController, didLikeUser user: User)
+    func profileController(_ controller: ProfileController, didDislikeUser user: User)
+}
+
 class ProfileController: UIViewController {
     
     //MARK: - Properties
     
     private let user: User
+    weak var delegate: ProfileControllerDelegate?
     
     private lazy var viewModel = ProfileViewModel(user: user)
     private lazy var barStackView = SegmentBarView(numberOfSegments: viewModel.imageUrls.count)
@@ -107,7 +113,7 @@ class ProfileController: UIViewController {
     //MARK: - Actions
     
     @objc func handleDislike() {
-        
+        delegate?.profileController(self, didDislikeUser: user)
     }
     
     @objc func handleSuperlike() {
@@ -115,7 +121,7 @@ class ProfileController: UIViewController {
     }
     
     @objc func handlelike() {
-        
+        delegate?.profileController(self, didLikeUser: user)
     }
     
     @objc func handleDismissal() {

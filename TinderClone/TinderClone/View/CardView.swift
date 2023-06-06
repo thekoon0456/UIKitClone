@@ -8,6 +8,8 @@
 import UIKit
 import SDWebImage
 
+//view에는 메서드 넣지말고 뷰만 넣기. delegate로 위임
+
 enum SwipeDirection: Int {
     case left = -1
     case right = 1
@@ -15,6 +17,7 @@ enum SwipeDirection: Int {
 
 protocol CardViewDelegate: AnyObject {
     func cardView(_ view: CardView, wantsToShowProfileFor user: User)
+    func cardView(_ view: CardView, didLikeUser: Bool)
 }
 
 class CardView: UIView {
@@ -151,8 +154,11 @@ class CardView: UIView {
             } else {
                 self.transform = .identity
             }
-
-            print("DEBUG: Animation did complete...")
+        } completion: { _ in
+            if shouldDismissCard {
+                let didLike = direction == .right
+                self.delegate?.cardView(self, didLikeUser: didLike)
+            }
         }
     }
     
