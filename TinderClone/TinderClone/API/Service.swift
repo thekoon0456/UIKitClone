@@ -19,19 +19,24 @@ struct Service {
         }
     }
     
-    static func fetchUsers(completion: @escaping([User]) -> Void) {
+    static func fetchUsers(forCurrentUser user: User ,completion: @escaping([User]) -> Void) {
         var users = [User]()
         
-        COLLECTION_USERS.getDocuments { snapshot, error in
-            snapshot?.documents.forEach({ document in
+        let quary = COLLECTION_USERS
+            .whereField("age", isGreaterThanOrEqualTo: user.minSeekingAge)
+            .whereField("age", isLessThanOrEqualTo: user.maxSeekingAge)
+        
+        quary.getDocuments { snapshot, error in
+            guard let snapshot = snapshot else { return }
+            snapshot.documents.forEach({ document in
                 let dictionary = document.data()
                 let user = User(dictionary: dictionary)
                 
+                guard user.uid != Auth.auth().currentUser?.uid else { return }
                 users.append(user)
                 
-                if users.count == snapshot?.documents.count {
-                    print("DEBUG: Document count: \(snapshot?.documents.count)")
-                    print("DEBUG: Users count: \(users.count)")
+                //해당 유저 빼므로 -1
+                if users.count == snapshot.documents.count - 1 {
                     completion(users)
                 }
             })
