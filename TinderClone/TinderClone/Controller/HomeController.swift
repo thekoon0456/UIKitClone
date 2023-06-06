@@ -35,24 +35,24 @@ final class HomeController: UIViewController {
         super.viewDidLoad()
         checkIfUserIsLoggedIn()
         configureUI()
-//        configureCards()
         fetchUsers()
-        fetchUser()
+        fetchCurrentUserAndCards()
 
     }
     
     //MARK: - API
     
-    func fetchUser() {
-        guard let uid = Auth.auth().currentUser?.uid else { return }
-        Service.fetchUser(withUid: uid) { user in
-            self.user = user
-        }
-    }
-    
     func fetchUsers() {
         Service.fetchUsers { users in
             self.viewModels = users.map { CardViewModel(user: $0) }
+        }
+    }
+    
+    func fetchCurrentUserAndCards() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        Service.fetchUser(withUid: uid) { user in
+            self.user = user
+            self.fetchUsers()
         }
     }
     
@@ -109,6 +109,7 @@ final class HomeController: UIViewController {
     func presentLoginController() {
         DispatchQueue.main.async {
             let controller = LoginController()
+            controller.delegate = self
             let nav = UINavigationController(rootViewController: controller)
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true)
@@ -220,5 +221,12 @@ extension HomeController: ProfileControllerDelegate {
             self.performSwipeAnimation(shouldLike: false)
             Service.saveSwipe(forUser: user, isLike: false)
         }
+    }
+}
+
+extension HomeController: AuthenticationDelegate {
+    func authenticationComplete() {
+        dismiss(animated: true)
+        fetchCurrentUserAndCards()
     }
 }

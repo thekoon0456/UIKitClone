@@ -13,6 +13,8 @@ class RegistrationController: UIViewController {
     
     private var viewModel = RegistrationViewModel()
     
+    weak var delegate: AuthenticationDelegate?
+    
     private lazy var selectPhotoButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -67,7 +69,7 @@ class RegistrationController: UIViewController {
                 print("DEBUG: 회원가입 오류 \(error.localizedDescription)")
             }
             
-            self.dismiss(animated: true)
+            self.delegate?.authenticationComplete()
         }
 
     }

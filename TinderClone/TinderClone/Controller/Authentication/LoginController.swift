@@ -7,11 +7,17 @@
 
 import UIKit
 
+protocol AuthenticationDelegate: AnyObject {
+    func authenticationComplete()
+}
+
 class LoginController: UIViewController {
     
     //MARK: - Properties
     
     private var viewModel = LoginViewModel()
+    
+    weak var delegate: AuthenticationDelegate?
     
     private let iconImageView: UIImageView = {
         let iv = UIImageView()
@@ -70,13 +76,14 @@ class LoginController: UIViewController {
                 print("DEBUG: 로그인 오류 \(error.localizedDescription)")
                 return
             }
-            
-            self.dismiss(animated: true)
+            self.delegate?.authenticationComplete()
         }
     }
     
     @objc func handleShowRegistration() {
-        navigationController?.pushViewController(RegistrationController(), animated: true)
+        let controller = RegistrationController()
+        controller.delegate = delegate //AuthenticationDelegate 준수하지 않으므로 self아님. homeController만 준수함.
+        navigationController?.pushViewController(controller, animated: true)
     }
     
     //MARK: - Helpers
