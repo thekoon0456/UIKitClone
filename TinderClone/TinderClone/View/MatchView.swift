@@ -49,7 +49,7 @@ class MatchView: UIView {
     }()
     
     private lazy var sendMessageButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = SendMessageButton(type: .system)
         button.setTitle("SEND MESSAGE", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapSendMessage), for: .touchUpInside)
@@ -57,7 +57,7 @@ class MatchView: UIView {
     }()
     
     private lazy var keepSwipingButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = KeepSwipingButton(type: .system)
         button.setTitle("Keep Swiping", for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.addTarget(self, action: #selector(didTapKeepSwiping), for: .touchUpInside)
@@ -129,8 +129,10 @@ class MatchView: UIView {
         matchedUserImageView.centerY(inView: self)
         
         sendMessageButton.anchor(top: currentUserImageView.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 32, paddingLeft: 48, paddingRight: 48)
+        sendMessageButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         keepSwipingButton.anchor(top: sendMessageButton.bottomAnchor, left: leftAnchor, right: rightAnchor, paddingTop: 16, paddingLeft: 48, paddingRight: 48)
+        keepSwipingButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         
         descriptionLabel.anchor(left: leftAnchor, bottom: currentUserImageView.topAnchor, right: rightAnchor, paddingBottom: 32)
         
