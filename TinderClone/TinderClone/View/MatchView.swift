@@ -84,7 +84,7 @@ class MatchView: UIView {
         
         configureBlurView()
         configureUI()
-        
+        configureAnimations()
     }
     
     required init?(coder: NSCoder) {
@@ -139,6 +139,41 @@ class MatchView: UIView {
         matchImageView.anchor(bottom: descriptionLabel.topAnchor, paddingBottom: 16)
         matchImageView.setDimensions(height: 80, width: 300)
         matchImageView.centerX(inView: self)
+    }
+    
+    func configureAnimations() {
+        views.forEach { $0.alpha = 1 }
+        
+        let angle = 30 * CGFloat.pi / 180 // 처음에 휘어진 각도 설정
+        
+        currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle).concatenating(CGAffineTransform(translationX: 200, y: 0)) //x로 200포인트 이동
+        
+        //매치 유저는 반대쪽에서 반대로 옴
+        matchedUserImageView.transform = CGAffineTransform(rotationAngle: angle).concatenating(CGAffineTransform(translationX: -200, y: 0))
+        
+        self.sendMessageButton.transform = CGAffineTransform(translationX: -500, y: 0)
+        self.keepSwipingButton.transform = CGAffineTransform(translationX: 500, y: 0)
+        
+        //animateKeyframes: 여러 애니메이션 연결. 전체적으로 1.3초
+        UIView.animateKeyframes(withDuration: 1.3, delay: 0, options: .calculationModeCubic) {
+            //0초에서 시작
+            UIView.addKeyframe(withRelativeStartTime: 0, relativeDuration: 0.45) {
+                //CGAffineTransform(rotationAngle:) 회전효과
+                self.currentUserImageView.transform = CGAffineTransform(rotationAngle: -angle)
+                self.matchedUserImageView.transform = CGAffineTransform(rotationAngle: -angle)
+            }
+            //0.6초에서 시작
+            UIView.addKeyframe(withRelativeStartTime: 0.6, relativeDuration: 0.4) {
+                //원래 설정한 포지션으로
+                self.currentUserImageView.transform = .identity
+                self.matchedUserImageView.transform = .identity
+            }
+        }
+        
+        UIView.animate(withDuration: 0.75, delay: 0.6 * 1.3, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.1, options: .curveEaseInOut) {
+            self.sendMessageButton.transform = .identity
+            self.keepSwipingButton.transform = .identity
+        }
     }
     
     func configureBlurView() {
