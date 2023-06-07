@@ -51,7 +51,7 @@ class SettingCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         
-        addSubview(inputField)
+        contentView.addSubview(inputField)
         inputField.fillSuperview()
         
         let minStack = UIStackView(arrangedSubviews: [minAgeLabel, minAgeSlider])
@@ -64,7 +64,7 @@ class SettingCell: UITableViewCell {
         sliderStack.axis = .vertical
         sliderStack.spacing = 16
         
-        addSubview(sliderStack)
+        contentView.addSubview(sliderStack)
         sliderStack.centerY(inView: self)
         sliderStack.anchor(left: leftAnchor, right: rightAnchor, paddingLeft: 24, paddingRight: 24)
     }

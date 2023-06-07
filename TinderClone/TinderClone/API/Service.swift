@@ -26,20 +26,38 @@ struct Service {
             .whereField("age", isGreaterThanOrEqualTo: user.minSeekingAge)
             .whereField("age", isLessThanOrEqualTo: user.maxSeekingAge)
         
-        quary.getDocuments { snapshot, error in
-            guard let snapshot = snapshot else { return }
-            snapshot.documents.forEach({ document in
-                let dictionary = document.data()
-                let user = User(dictionary: dictionary)
-                
-                guard user.uid != Auth.auth().currentUser?.uid else { return }
-                users.append(user)
-                
-                //해당 유저 빼므로 -1
-                if users.count == snapshot.documents.count - 1 {
-                    completion(users)
-                }
-            })
+        fetchSwipes { swipedUserIDs in
+            quary.getDocuments { snapshot, error in
+                guard let snapshot = snapshot else { return }
+                snapshot.documents.forEach({ document in
+                    let dictionary = document.data()
+                    let user = User(dictionary: dictionary)
+                    
+                    guard user.uid != Auth.auth().currentUser?.uid else { return }
+                    guard swipedUserIDs[user.uid] == nil else { return } //swipe 했는지 확인
+                    users.append(user)
+                    
+                    //해당 유저 빼므로 -1
+//                    if users.count == snapshot.documents.count - 1 {
+//                        completion(users)
+//                    }
+                })
+                //completion block내, forEach문 밖으로 꺼내서 한번만 실행되도록
+                completion(users)
+            }
+        }
+    }
+    
+    private static func fetchSwipes(completion: @escaping ([String: Bool]) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        COLLECTION_SWIPES.document(uid).getDocument { snapshot, error in
+            guard let data = snapshot?.data() as? [String: Bool] else {
+                completion([String: Bool]())
+                return
+            }
+            
+            completion(data)
         }
     }
     

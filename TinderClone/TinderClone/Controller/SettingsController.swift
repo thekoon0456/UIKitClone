@@ -90,7 +90,7 @@ class SettingsController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleDone))
         
         tableView.separatorStyle = .none //테이블뷰 구분선 제거
-
+        
         tableView.tableHeaderView = headerView
         tableView.backgroundColor = .systemGroupedBackground
         tableView.register(SettingCell.self, forCellReuseIdentifier: reuserIdentifier)
@@ -100,12 +100,16 @@ class SettingsController: UITableViewController {
         footerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 88)
         footerView.delegate = self
     }
-
+    
 }
 
 //MARK: - UITableViewDataSource
 
 extension SettingsController {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("눌림")
+    }
+    
     override func numberOfSections(in tableView: UITableView) -> Int {
         return SettingSections.allCases.count
     }
@@ -116,7 +120,7 @@ extension SettingsController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuserIdentifier, for: indexPath) as! SettingCell
-        
+        cell.contentView.isUserInteractionEnabled = true
         guard let section = SettingSections(rawValue: indexPath.section) else { return cell }
         let viewModel = SettingViewModel(user: user, section: section)
         cell.viewModel = viewModel
