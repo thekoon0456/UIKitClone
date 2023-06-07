@@ -132,6 +132,7 @@ final class HomeController: UIViewController {
         guard let currentUser = self.user else { return }
         let viewModel = MatchViewViewModel(currentUser: currentUser, matchedUser: user)
         let matchView = MatchView(viewModel: viewModel)
+        matchView.delegate = self
         view.addSubview(matchView)
         matchView.fillSuperview()
     }
@@ -246,9 +247,21 @@ extension HomeController: ProfileControllerDelegate {
     }
 }
 
+//MARK: - AuthenticationDelegate
+
 extension HomeController: AuthenticationDelegate {
     func authenticationComplete() {
         dismiss(animated: true)
         fetchCurrentUserAndCards()
     }
+}
+
+//MARK: - MatchViewDelegate
+
+extension HomeController: MatchViewDelegate {
+    func matchView(_ view: MatchView, wantsToSendMessageTo user: User) {
+        print("DEBUG: Startconversation with \(user.name)")
+    }
+    
+    
 }

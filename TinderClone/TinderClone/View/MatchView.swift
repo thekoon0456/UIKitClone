@@ -7,11 +7,16 @@
 
 import UIKit
 
+protocol MatchViewDelegate: AnyObject {
+    func matchView(_ view: MatchView, wantsToSendMessageTo user: User)
+}
+
 class MatchView: UIView {
     
     //MARK: -  Properties
     
     private let viewModel: MatchViewViewModel
+    weak var delegate: MatchViewDelegate?
     
     private let matchImageView: UIImageView = {
         let iv = UIImageView(image: #imageLiteral(resourceName: "itsamatch"))
@@ -59,7 +64,7 @@ class MatchView: UIView {
         let button = KeepSwipingButton(type: .system)
         button.setTitle("Keep Swiping", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.addTarget(self, action: #selector(didTapKeepSwiping), for: .touchUpInside)
+        button.addTarget(self, action: #selector(handelDismissal), for: .touchUpInside)
         return button
     }()
     
@@ -94,11 +99,7 @@ class MatchView: UIView {
     //MARK: - Actions
     
     @objc func didTapSendMessage() {
-        
-    }
-    
-    @objc func didTapKeepSwiping() {
-        
+        delegate?.matchView(self, wantsToSendMessageTo: viewModel.matchedUser)
     }
     
     @objc func handelDismissal() {
