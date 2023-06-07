@@ -81,6 +81,9 @@ final class HomeController: UIViewController {
             
             Service.checkIfMatchExists(forUser: user) { didMatch in
                 self.presentMatchView(forUser: user)
+                
+                guard let currentUser = self.user else { return }
+                Service.uploadMatch(currentUser: currentUser, matchedUser: user)
             }
         }
     }

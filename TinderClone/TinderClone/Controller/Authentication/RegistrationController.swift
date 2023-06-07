@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import JGProgressHUD
 
 class RegistrationController: UIViewController {
     
@@ -30,7 +31,9 @@ class RegistrationController: UIViewController {
     private var profileImage: UIImage?
     
     private lazy var authButton: AuthButton = {
-        let button = AuthButton(title: "Sign Up", type: .system)
+        let button = AuthButton(type: .system)
+        button.setTitle("Sign Up", for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .heavy)
         button.addTarget(self, action: #selector(handelRegisterUser), for: .touchUpInside)
         return button
     }()
@@ -62,13 +65,19 @@ class RegistrationController: UIViewController {
         guard let fullName = fullNameTextField.text else { return }
         guard let profileImage = profileImage else { return }
         
+        let hud = JGProgressHUD(style: .dark)
+        hud.show(in: view)
+        
         let credentials = AuthCredentials(email: email, password: password, fullname: fullName, profileImage: profileImage)
         
         AuthService.registerUser(withCredentials: credentials) { error in
             if let error = error {
                 print("DEBUG: 회원가입 오류 \(error.localizedDescription)")
+                hud.dismiss()
+                return
             }
             
+            hud.dismiss()
             self.delegate?.authenticationComplete()
         }
 

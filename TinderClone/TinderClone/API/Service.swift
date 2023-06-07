@@ -11,6 +11,8 @@ import Firebase
 //뷰컨과 분리해서 API 읽기, 쓰기.
 struct Service {
     
+    //MARK: - Fetching
+    
     static func fetchUser(withUid uid: String, completion: @escaping (User) -> Void) {
         COLLECTION_USERS.document(uid).getDocument { snapshot, error in
             guard let dictionary = snapshot?.data() else { return }
@@ -61,6 +63,19 @@ struct Service {
         }
     }
     
+    static func fetchMatches(completion: @escaping ([Match]) -> Void) {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        
+        COLLECTION_MATCHES_MESSAGES.document(uid).collection("matches").getDocuments { snapshop, error in
+            guard let data = snapshop else { return }
+        
+            let matches = data.documents.map { Match(dictionary: $0.data()) }
+            completion(matches)
+        }
+    }
+    
+    //MARK: - Uploads
+    
     static func saveUserData(user: User, completion: @escaping (Error?) -> Void) {
         let data = ["uid": user.uid,
                     "fullName": user.name,
@@ -97,6 +112,24 @@ struct Service {
             guard let didMatch = data[currentUid] as? Bool else { return }
             Completion(didMatch)
         }
+    }
+    
+    //각 사용자의 구조에 각각 데이터 업로드. 사용자에 대한 모든 매치 정보 저장
+    static func uploadMatch(currentUser: User, matchedUser: User) {
+        guard let profileImageUrl = matchedUser.imageUrls.first else { return }
+        guard let currentUserProfileImageUrl = currentUser.imageUrls.first else { return }
+        
+        let matchedUserData = ["uid": matchedUser.uid,
+                               "name": matchedUser.name,
+                               "profileImageUrl": profileImageUrl]
+        
+        COLLECTION_MATCHES_MESSAGES.document(currentUser.uid).collection("matches").document(matchedUser.uid).setData(matchedUserData)
+        
+        let currentUserData = ["uid": currentUser.uid,
+                               "name": currentUser.name,
+                               "profileImageUrl": currentUserProfileImageUrl]
+        
+        COLLECTION_MATCHES_MESSAGES.document(matchedUser.uid).collection("matches").document(currentUser.uid).setData(currentUserData)
     }
     
     static func uploadImage(image: UIImage, complition: @escaping (String) -> Void) {

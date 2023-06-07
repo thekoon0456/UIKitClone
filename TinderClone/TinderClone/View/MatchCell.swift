@@ -6,12 +6,21 @@
 //
 
 import UIKit
+import SDWebImage
 
 class MatchCell: UICollectionViewCell {
     
     //MARK: - Properties
+    
+    var viewModel: MatchCellViewModel! {
+        didSet {
+            usernameLable.text = viewModel.nameText
+            profileImageView.sd_setImage(with: viewModel.profileImageUrl)
+        }
+    }
+    
     private let profileImageView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "kelly1"))
+        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.borderWidth = 2
@@ -23,11 +32,10 @@ class MatchCell: UICollectionViewCell {
     
     private let usernameLable: UILabel = {
         let label = UILabel()
-        label.text = "Username"
         label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
         label.textColor = .darkGray
         label.textAlignment = .center
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         return label
     }()
     

@@ -9,7 +9,17 @@ import UIKit
 
 private let cellIdentifier = "MatchCell"
 
+protocol MatchHeaderDelegate: AnyObject {
+    func matchHeader(_ header: MatchHeader, wantsToStartChatWith uid: String)
+}
+
 class MatchHeader: UICollectionReusableView {
+    
+    var matches: [Match] = [] {
+        didSet { collectionView.reloadData() } //설정할때마다 데이터 불러옴
+    }
+    
+    weak var delegate: MatchHeaderDelegate?
     
     //MARK: - Properties
     
@@ -29,6 +39,7 @@ class MatchHeader: UICollectionReusableView {
         cv.delegate = self
         cv.dataSource = self
         cv.register(MatchCell.self, forCellWithReuseIdentifier: cellIdentifier)
+        cv.showsHorizontalScrollIndicator = false
         return cv
     }()
     
@@ -53,12 +64,12 @@ class MatchHeader: UICollectionReusableView {
 
 extension MatchHeader: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        10
+        matches.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as! MatchCell
-        
+        cell.viewModel = MatchCellViewModel(match: matches[indexPath.row])
         return cell
     }
     
@@ -66,11 +77,14 @@ extension MatchHeader: UICollectionViewDataSource {
 }
 
 extension MatchHeader: UICollectionViewDelegate {
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let uid = matches[indexPath.row].uid
+        delegate?.matchHeader(self, wantsToStartChatWith: uid)
+    }
 }
 
 extension MatchHeader: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        CGSize(width: 80, height: 100)
+        CGSize(width: 80, height: 124)
     }
 }

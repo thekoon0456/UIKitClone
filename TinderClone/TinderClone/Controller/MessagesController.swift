@@ -27,7 +27,7 @@ class MessageController: UITableViewController {
     override func viewDidLoad() {
         configureTableView()
         configureNavigationBar()
-        
+        fetchMatches()
         
     }
     
@@ -41,13 +41,23 @@ class MessageController: UITableViewController {
         dismiss(animated: true)
     }
     
+    //MARK: - API
+    
+    func fetchMatches() {
+        Service.fetchMatches { matches in
+            self.headerView.matches = matches
+        }
+    }
+    
     //MARK: - Helpers
     
     func configureTableView() {
         tableView.rowHeight = 80
         tableView.tableFooterView = UIView()
+        tableView.separatorStyle = .none
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        headerView.delegate = self
         headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
         tableView.tableHeaderView = headerView
                                   
@@ -100,4 +110,16 @@ extension MessageController {
         label.centerY(inView: view, leftAnchor: view.leftAnchor, paddingLeft: 12)
         return view
     }
+}
+
+//MARK: - MessageController
+
+extension MessageController: MatchHeaderDelegate {
+    func matchHeader(_ header: MatchHeader, wantsToStartChatWith uid: String) {
+        Service.fetchUser(withUid: uid) { user in
+            print("\(user.name)")
+        }
+    }
+    
+    
 }
