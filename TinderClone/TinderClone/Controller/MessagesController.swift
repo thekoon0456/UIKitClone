@@ -15,6 +15,8 @@ class MessageController: UITableViewController {
     
     private let user: User
     
+    private let headerView = MatchHeader()
+    
     //MARK: - Lifecycle
     
     init(user: User) {
@@ -25,6 +27,8 @@ class MessageController: UITableViewController {
     override func viewDidLoad() {
         configureTableView()
         configureNavigationBar()
+        
+        
     }
     
     required init?(coder: NSCoder) {
@@ -44,6 +48,9 @@ class MessageController: UITableViewController {
         tableView.tableFooterView = UIView()
         
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
+        headerView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: 200)
+        tableView.tableHeaderView = headerView
+                                  
     }
     
     func configureNavigationBar() {
