@@ -72,6 +72,19 @@ final class HomeController: UIViewController {
         }
     }
     
+    func saveSwipeAndCheckForMatch(forUser user: User, didLike: Bool) {
+        Service.saveSwipe(forUser: user, isLike: didLike) { error in
+            self.topCardView = self.cardViews.last
+            
+            //true일때만 아래 매칭코드 실행
+            guard didLike == true else { return }
+            
+            Service.checkIfMatchExists(forUser: user) { didMatch in
+                print("DEBUG: User did match..")
+            }
+        }
+    }
+    
     //MARK: - Helpers
     
     func configureCards() {
@@ -170,7 +183,7 @@ extension HomeController: CardViewDelegate {
         self.cardViews.removeAll(where: { view == $0} )
         
         guard let user = topCardView?.viewModel.user else { return }
-        Service.saveSwipe(forUser: user, isLike: didLikeUser)
+        saveSwipeAndCheckForMatch(forUser: user, didLike: didLikeUser)
         
         self.topCardView = cardViews.last
     }
@@ -191,14 +204,14 @@ extension HomeController: BottomControlsStackViewDelegate {
         guard let topCard = topCardView else { return }
         
         performSwipeAnimation(shouldLike: true)
-        Service.saveSwipe(forUser: topCard.viewModel.user, isLike: true)
+        saveSwipeAndCheckForMatch(forUser: topCard.viewModel.user, didLike: true)
     }
     
     func handleDislike() {
         guard let topCard = topCardView else { return }
         
         performSwipeAnimation(shouldLike: false)
-        Service.saveSwipe(forUser: topCard.viewModel.user, isLike: false)
+        Service.saveSwipe(forUser: topCard.viewModel.user, isLike: false, completion: nil)
     }
     
     func handleRefresh() {
@@ -206,19 +219,21 @@ extension HomeController: BottomControlsStackViewDelegate {
     }
 }
 
+//MARK: - ProfileControllerDelegate
+
 extension HomeController: ProfileControllerDelegate {
     func profileController(_ controller: ProfileController, didLikeUser user: User) {
         //profileController가 dismiss된 뒤 애니메이션 작동하도록 complition으로 구현
         controller.dismiss(animated: true) {
             self.performSwipeAnimation(shouldLike: true)
-            Service.saveSwipe(forUser: user, isLike: true)
+            self.saveSwipeAndCheckForMatch(forUser: user, didLike: true)
         }
     }
     
     func profileController(_ controller: ProfileController, didDislikeUser user: User) {
         controller.dismiss(animated: true) {
             self.performSwipeAnimation(shouldLike: false)
-            Service.saveSwipe(forUser: user, isLike: false)
+            Service.saveSwipe(forUser: user, isLike: false, completion: nil)
         }
     }
 }
