@@ -130,7 +130,8 @@ final class HomeController: UIViewController {
     
     func presentMatchView(forUser user: User) {
         guard let currentUser = self.user else { return }
-        let matchView = MatchView(currentUser: currentUser, matchUser: user)
+        let viewModel = MatchViewViewModel(currentUser: currentUser, matchedUser: user)
+        let matchView = MatchView(viewModel: viewModel)
         view.addSubview(matchView)
         matchView.fillSuperview()
     }

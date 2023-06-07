@@ -11,8 +11,7 @@ class MatchView: UIView {
     
     //MARK: -  Properties
     
-    private let currentUser: User
-    private let matchUser: User
+    private let viewModel: MatchViewViewModel
     
     private let matchImageView: UIImageView = {
         let iv = UIImageView(image: #imageLiteral(resourceName: "itsamatch"))
@@ -20,13 +19,13 @@ class MatchView: UIView {
         return iv
     }()
     
-    private let descriptionLabel: UILabel = {
+    private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .white
         label.font = UIFont.systemFont(ofSize: 20)
         label.numberOfLines = 0
-        label.text = "You and Megan have liked each other!"
+        label.text = viewModel.matchLabelText
         return label
     }()
     
@@ -77,10 +76,11 @@ class MatchView: UIView {
     
     //MARK: - Lifecycle
     
-    init(currentUser: User, matchUser: User) {
-        self.currentUser = currentUser
-        self.matchUser = matchUser
+    init(viewModel: MatchViewViewModel) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
+        
+        loadUserData()
         
         configureBlurView()
         configureUI()
@@ -112,18 +112,25 @@ class MatchView: UIView {
     
     //MARK: - Helpers
     
+    func loadUserData() {
+        descriptionLabel.text = viewModel.matchLabelText
+        
+        currentUserImageView.sd_setImage(with: viewModel.currentUserImageUrl)
+        matchedUserImageView.sd_setImage(with: viewModel.matchedUserImageUrl)
+    }
+    
     func configureUI() {
         views.forEach { view in
             addSubview(view)
-            view.alpha = 1 //투명으로 시작. 나중에 나오도록 애니메이션
+            view.alpha = 0 //투명으로 시작. 나중에 나오도록 애니메이션
         }
         
-        currentUserImageView.anchor(left: centerXAnchor, paddingLeft: 16)
+        currentUserImageView.anchor(right: centerXAnchor, paddingRight: 16)
         currentUserImageView.setDimensions(height: 140, width: 140)
         currentUserImageView.layer.cornerRadius = 140 / 2
         currentUserImageView.centerY(inView: self)
         
-        matchedUserImageView.anchor(right: centerXAnchor, paddingRight: 16)
+        matchedUserImageView.anchor(left: centerXAnchor, paddingLeft: 16)
         matchedUserImageView.setDimensions(height: 140, width: 140)
         matchedUserImageView.layer.cornerRadius = 140 / 2
         matchedUserImageView.centerY(inView: self)
