@@ -80,7 +80,7 @@ final class HomeController: UIViewController {
             guard didLike == true else { return }
             
             Service.checkIfMatchExists(forUser: user) { didMatch in
-                print("DEBUG: User did match..")
+                self.presentMatchView(forUser: user)
             }
         }
     }
@@ -126,6 +126,13 @@ final class HomeController: UIViewController {
             nav.modalPresentationStyle = .fullScreen
             self.present(nav, animated: true)
         }
+    }
+    
+    func presentMatchView(forUser user: User) {
+        guard let currentUser = self.user else { return }
+        let matchView = MatchView(currentUser: currentUser, matchUser: user)
+        view.addSubview(matchView)
+        matchView.fillSuperview()
     }
     
     func performSwipeAnimation(shouldLike: Bool) {

@@ -12,6 +12,7 @@
 		7C5A281F2A2DB83200B8EF5D /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A281E2A2DB83200B8EF5D /* ProfileCell.swift */; };
 		7C5A28212A2DC41A00B8EF5D /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A28202A2DC41A00B8EF5D /* ProfileViewModel.swift */; };
 		7C5A28232A2DCAE000B8EF5D /* SegmentBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C5A28222A2DCADF00B8EF5D /* SegmentBarView.swift */; };
+		7C6177FD2A304BB900054BB0 /* MatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C6177FC2A304BB900054BB0 /* MatchView.swift */; };
 		7C91C96D2A288CE9000EFE45 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C91C96C2A288CE9000EFE45 /* Constant.swift */; };
 		7C91C96F2A28B53F000EFE45 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C91C96E2A28B53F000EFE45 /* SettingsController.swift */; };
 		7C91C9712A28B81B000EFE45 /* SettingHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C91C9702A28B81B000EFE45 /* SettingHeader.swift */; };
@@ -45,6 +46,7 @@
 		7C5A281E2A2DB83200B8EF5D /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		7C5A28202A2DC41A00B8EF5D /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		7C5A28222A2DCADF00B8EF5D /* SegmentBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentBarView.swift; sourceTree = "<group>"; };
+		7C6177FC2A304BB900054BB0 /* MatchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchView.swift; sourceTree = "<group>"; };
 		7C91C96C2A288CE9000EFE45 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		7C91C96E2A28B53F000EFE45 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		7C91C9702A28B81B000EFE45 /* SettingHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingHeader.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				7CA443602A2369F700070381 /* CardView.swift */,
 				7C5A281E2A2DB83200B8EF5D /* ProfileCell.swift */,
 				7C5A28222A2DCADF00B8EF5D /* SegmentBarView.swift */,
+				7C6177FC2A304BB900054BB0 /* MatchView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 				7C5A281D2A2DA69D00B8EF5D /* ProfileController.swift in Sources */,
 				7CA4433F2A233AC000070381 /* AppDelegate.swift in Sources */,
 				7CA4435D2A233DC400070381 /* HomeNavigationStackView.swift in Sources */,
+				7C6177FD2A304BB900054BB0 /* MatchView.swift in Sources */,
 				7CFD27B02A2488F900AB7ECC /* User.swift in Sources */,
 				7CA443412A233AC000070381 /* SceneDelegate.swift in Sources */,
 				7C5A28212A2DC41A00B8EF5D /* ProfileViewModel.swift in Sources */,
