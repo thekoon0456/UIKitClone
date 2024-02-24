@@ -38,11 +38,7 @@ struct Service {
                     guard user.uid != Auth.auth().currentUser?.uid else { return }
                     guard swipedUserIDs[user.uid] == nil else { return } //swipe 했는지 확인
                     users.append(user)
-                    
-                    //해당 유저 빼므로 -1
-//                    if users.count == snapshot.documents.count - 1 {
-//                        completion(users)
-//                    }
+                
                 })
                 //completion block내, forEach문 밖으로 꺼내서 한번만 실행되도록
                 completion(users)
